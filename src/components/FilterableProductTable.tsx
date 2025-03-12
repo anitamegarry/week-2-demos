@@ -1,5 +1,7 @@
+import { useState } from "react";
 import ProductTable from "./ProductTable";
 import SearchBar from "./SearchBar";
+
 
 export interface Product {
   category: string;
@@ -15,10 +17,22 @@ export interface FilterableProductTableProps {
 export default function FilterableProductTable({
   products,
 }: FilterableProductTableProps) {
+
+  const [text, setText] = useState("")
+  const [stocked, setStocked] = useState(false)
+
+  function updateText(newText: string) {
+    setText(newText)
+  }
+
+  function changeStock() {
+    setStocked((prevStocked) => !prevStocked)
+  }
+
   return (
     <div>
-      <SearchBar />
-      <ProductTable products={products} />
+      <SearchBar text={text} onTextChange={updateText} onStockCheck={changeStock} checkStock={stocked}/>
+      <ProductTable products={products} text={text} checkStock={stocked}/>
     </div>
   );
 }
